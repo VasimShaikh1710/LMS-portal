@@ -133,3 +133,6 @@ def profile(request):
 
 def chat(request):
     return render(request, 'chat.html')
+
+def chat(request):
+    return render(request, 'chat.html')
