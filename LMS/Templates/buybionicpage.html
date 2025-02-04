@@ -1,0 +1,182 @@
+<!-- buy_bionic_hand.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Bionic Hand</title>
+    {% load static %}
+    <link rel="stylesheet" href="styles.css"> <!-- Custom CSS link -->
+</head>
+
+<style>
+    /* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.product-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.product-container {
+    display: flex;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 80%;
+    max-width: 1200px;
+    transform: translateY(30px);
+    animation: slide-up 0.7s ease-out forwards;
+}
+
+@keyframes slide-up {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.product-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    max-width: 400px;
+    transition: transform 0.4s ease-in-out;
+}
+
+.product-image img:hover {
+    transform: scale(1.1);
+}
+
+.product-details {
+    padding: 30px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.product-details h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.product-details h1:hover {
+    color: #007bff;
+}
+
+.reviews {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.price {
+    font-size: 1.5rem;
+    color: #28a745;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.buttons button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-right: 15px;
+    border-radius: 5px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.buttons button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.buttons .buy-now {
+    background-color: #ff5733;
+}
+
+.buttons .buy-now:hover {
+    background-color: #e94f2e;
+}
+
+.specifications {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.specifications li {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    color: #777;
+}
+
+.specifications li::before {
+    content: "✔ ";
+    color: #28a745;
+}
+
+</style>
+
+<body>
+    <div class="product-page">
+        <div class="product-container">
+            <!-- Left Side (Image) -->
+            <div class="product-image">
+                <img src="{% static 'images/bionic.jpg' %}" alt="Bionic Hand">
+            </div>
+
+            <!-- Right Side (Details) -->
+            <div class="product-details">
+                <h1 class="animate-title">Bionic Hand</h1>
+                <div class="reviews">
+                    <span>⭐⭐⭐⭐⭐</span> <!-- Ratings -->
+                    <span>(120 Reviews)</span> <!-- Reviews count -->
+                </div>
+                <p class="price">Price: ₹25,000</p>
+                <div class="buttons">
+                    <button class="add-to-cart animate-button">Add to Cart</button>
+                    <button class="buy-now animate-button">Buy Now</button>
+                </div>
+
+                <h3>Specifications</h3>
+                <ul class="specifications">
+                    <li>Model: Advanced Bionic Hand</li>
+                    <li>Weight: 500g</li>
+                    <li>Material: High-quality plastic</li>
+                    <li>Battery Life: 10 hours</li>
+                    <li>Compatibility: Android, iOS</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

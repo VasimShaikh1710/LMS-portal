@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Demos - Robotics & AI</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.10.2/lottie.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1d3557, #457b9d);
+            color: #ffffff;
+            text-align: center;
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px 0;
+            font-size: 2.2em;
+            font-weight: 600;
+            color: #ffcc00;
+            text-shadow: 2px 2px 4px #000000;
+        }
+
+        .intro {
+            padding: 20px;
+            font-size: 1.2em;
+        }
+
+        .demos-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .demo-card {
+            background: #2a9d8f;
+            border-radius: 10px;
+            width: 280px;
+            margin: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 6px #1b6e68;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px #145950;
+        }
+
+        .demo-card h3 {
+            color: #ffffff;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .demo-card p {
+            font-size: 1em;
+            color: #e0f7fa;
+            margin-bottom: 15px;
+        }
+
+        .demo-card a {
+            display: inline-block;
+            background: #ffcc00;
+            color: #1d3557;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .demo-card a:hover {
+            background: #ffda66;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 10px 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: #cccccc;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Interactive Demos
+    </header>
+
+    <div class="intro">
+        Explore our interactive demonstrations to learn about AI, ML, and Robotics! Control a Bionic Hand, see AI Pathfinding in action, and operate a virtual Robot Arm.
+    </div>
+
+    <div class="demos-container">
+        <!-- Bionic Hand Simulation -->
+        <div class="demo-card">
+            <h3>Bionic Hand Simulation</h3>
+            <p>Control a virtual bionic hand using sliders and learn how it works step by step!</p>
+            <a href="{% url 'demo_bionic_hand' %}">Try Now</a>
+        </div>
+
+        <!-- Pathfinding Algorithm -->
+        <div class="demo-card">
+            <h3>Pathfinding Algorithm</h3>
+            <p>Discover how AI solves mazes using intelligent pathfinding algorithms.</p>
+            <a href="{% url 'demo_pathfinding' %}">Explore</a>
+        </div>
+
+        <!-- Dobot Robot Arm Simulation -->
+        <div class="demo-card">
+            <h3>Robot Arm Simulation</h3>
+            <p>Control a virtual robot arm to pick and place objects. Learn about sensors and actuators!</p>
+            <a href="{% url 'demo_robot_arm' %}">Start</a>
+        </div>
+    </div>
+
+    <footer>
+        © 2025 Robotics & AI for Kids - All Rights Reserved
+    </footer>
+</body>
+</html>

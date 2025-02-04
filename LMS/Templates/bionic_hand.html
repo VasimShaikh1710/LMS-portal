@@ -1,0 +1,908 @@
+{% extends "base.html" %}
+
+{% block title %}
+Kit
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<!-- Font Awesome CDN for the lock icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<head>
+<style>
+ /* Root styling for colors and fonts */
+    :root {
+        --primary-color: #2f6fed; /* Blue color */
+        --secondary-color: #ffffff; /* White color */
+        --text-color: #0a0d14; /* Dark text */
+        --font-family: 'Red Hat Display', sans-serif;
+        --kit-gradient: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)); /* Overlay gradient */
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0; 
+        padding: 0;
+      }
+
+      body {
+        background: linear-gradient(to bottom, #ffffff, #a2c2f2);
+        font-family: var(--font-family);
+      }
+      
+      h1 {
+        text-align: center;
+        margin-bottom: 32px;
+        color: var(--primary-color);
+        font-size: 32px;
+      }
+
+
+    /* Navigation Bar Styles */
+    .navbar {
+        background-color: var(--secondary-color);
+        padding: 20px 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for navbar */
+      }
+
+      .navbar .navbar-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+      }
+
+      /* Animated PHN Logo */
+      .navbar .logo {
+    font-size: 32px; /* Increase font size here */
+    font-weight: bold;
+    color: var(--primary-color);
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.3s ease, color 0.3s ease;
+    animation: pulse 2s infinite;
+    }
+
+
+      .navbar .logo:hover {
+        transform: scale(1.2) rotate(10deg); /* Scale and rotate on hover */
+        color: #ff5733; /* Change color on hover */
+      }
+
+      /* Keyframes for pulsing effect */
+      @keyframes pulse {
+        0%, 100% {
+          transform: scale(1);
+          color: var(--primary-color);
+        }
+        50% {
+          transform: scale(1.1);
+          color: #ff9900; /* A lighter shade for the animation */
+        }
+      }
+
+      .navbar .nav-links {
+        display: flex;
+        gap: 30px;
+      }
+
+      .navbar .nav-links a {
+        font-size: 18px;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .navbar .nav-links a:hover {
+        color: var(--primary-color);
+      }
+
+
+      
+      /* Main container styling */
+      .main-container {
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+      }
+      
+      .sidebar {
+        position: fixed;
+        top: 80px; /* Adjust according to your navbar height */
+        left: 0;
+        width: 250px;
+        height: calc(100vh - 80px); /* Full height minus navbar height */
+        background-color: var(--primary-color);
+        color: var(--secondary-color);
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+
+      
+      .sidebar h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      
+      .sidebar ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      
+      .sidebar ul li {
+        margin: 10px 0;
+        position: relative;
+      }
+      
+      .sidebar ul li a {
+        color: var(--secondary-color);
+        text-decoration: none;
+        font-size: 18px;
+        display: block;
+        padding: 10px;
+        border-radius: 5px;
+        transition: background 0.3s ease;
+      }
+      
+      .sidebar ul li a:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      
+      /* Dropdown menu styling */
+      .sidebar ul li ul {
+        display: none;
+        list-style-type: none;
+        padding: 0;
+        background-color: #4a8df0;
+        margin-top: 10px;
+        border-radius: 5px;
+        position: relative;
+        padding-left: 20px;
+      }
+      
+      .sidebar ul li ul li a {
+        font-size: 16px;
+        padding: 8px;
+        color: var(--secondary-color);
+      }
+      
+      .sidebar ul li ul li a:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+      
+      /* Content styling */
+      .content {
+        margin-left: 250px; /* Sidebar width */
+        padding: 20px;
+        overflow-y: auto; /* Ensure content can scroll if needed */
+        height: calc(100vh - 80px); /* Full height minus navbar height */
+        overflow-x: hidden; /* Prevent horizontal scrolling */
+
+    }
+      
+      .content h1 {
+        font-size: 32px;
+        margin-bottom: 20px;
+        color: var(--primary-color);
+      }
+      
+      .content section {
+        margin-bottom: 40px;
+        display: none;
+      }
+      
+      .content section.active {
+        display: block;
+      }
+      
+      .content section h2 {
+        font-size: 26px;
+        margin-bottom: 10px;
+        color: var(--primary-color);
+      }
+      
+      .content section p {
+        font-size: 18px;
+        line-height: 1.8;
+        margin-bottom: 15px;
+      }
+      
+      /* Styling for Image and Text */
+      .kit-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+      gap: 20px;
+    }
+
+    .kit-image {
+      width: 300px; /* Image का size कम कर दिया */
+      height: 500px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .kit-description {
+      flex: 1;
+      padding: 20px;
+      background-color: #f5f5f5;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: left; /* टेक्स्ट को left align किया */
+    }
+
+    .kit-description h3 {
+      font-size: 24px;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+    }
+
+    .kit-description p {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #555555;
+    }
+
+/*Lecture section*/
+/* General Section Styling */
+
+#lectures {
+    text-align: center;
+    padding: 50px 20px;
+    color: #ffffff;
+}
+
+#lectures h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#lectures p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+/* Divider Styling */
+.divider {
+    width: 100px;
+    height: 4px;
+    background-color: #ff5733;
+    margin: 10px auto 30px;
+    border-radius: 2px;
+}
+
+/* Video Container - Flexbox for 3 Videos per Row */
+.video-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Video Item Styling */
+.video-item {
+    background-color: var(--primary-color);
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(255, 87, 51, 0.3);
+    transition: transform 0.3s ease-in-out;
+    width: 30%;
+    min-width: 300px;
+    max-width: 350px;
+}
+
+.video-item:hover {
+    transform: scale(1.05);
+}
+
+/* Video Frame Styling */
+.video-item iframe {
+    width: 100%;
+    height: 200px;
+    border-radius: 8px;
+}
+
+/* Video Description Styling */
+.video-item p {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 10px;
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .video-item {
+        width: 45%;
+    }
+}
+
+@media (max-width: 768px) {
+    .video-item {
+        width: 90%;
+    }
+}
+
+
+
+      
+      /* Styling for Components */
+      .components-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+      }
+      
+      .component-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        max-width: 1000px;
+      }
+      
+      .component-image {
+        width: 200px;
+        height: 200px;
+        border-radius: 10px;
+        object-fit: cover;
+        flex-shrink: 0;
+      }
+      
+      .component-description {
+        margin-left: 30px;
+        text-align: left;
+        padding: 25px;
+        background-color: #f5f5f5;
+        border-radius: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        flex: 3;
+        min-width: 450px;
+      }
+      
+      .component-description h3 {
+        font-size: 24px;
+        color: var(--primary-color);
+      }
+      
+      .component-description p {
+        font-size: 18px;
+        color: #555555;
+      }
+      
+        /* projects */
+
+    /* Container for Projects */
+    .projects-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 columns in the grid */
+        gap: 20px;
+    }
+
+    /* Individual Project Item */
+    .project-item {
+        cursor: pointer;
+        background-color: #f5f5f5;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transform and shadow animation */
+    }
+
+    /* Project Item Hover Effect */
+    .project-item:hover {
+        transform: translateY(-10px); /* Move card up slightly */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Increase shadow for hover effect */
+    }
+
+    /* Project Image */
+    .project-image {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        animation: fadeIn 1s ease; /* Fade-in animation for images */
+    }
+
+    /* Project Description */
+    .project-description {
+        margin-top: 10px;
+        opacity: 1; /* Ensure text is visible */
+        transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth hover effects */
+    }
+
+    /* Project Description Hover Effect */
+    .project-item:hover .project-description {
+        transform: scale(1.05); /* Slight enlargement on hover */
+        opacity: 1; /* Keep the text visible */
+    }
+
+    /* Project Description Header */
+    .project-description h3 {
+        font-size: 20px;
+        color: var(--primary-color);
+    }
+
+    /* Project Description Text */
+    .project-description p {
+        font-size: 16px;
+        color: #555555;
+    }
+
+    /* Keyframe Animations */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9); /* Slightly smaller at start */
+        }
+        to {
+            opacity: 1;
+            transform: scale(1); /* Full size and visible */
+        }
+    }
+
+    #documents {
+      height: 100%; /* Allow #documents to take full height */
+      overflow: hidden; /* Prevent scrollbars within the container */
+    }
+
+    /* progress */
+
+    .progress-container {
+        margin-top: 30px;
+        text-align: center;
+      }
+      
+      .progress-bar-container {
+        display: block;
+        margin-bottom: 20px;
+      }
+      
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      
+      .circle-progress {
+        position: relative;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #f3f3f3;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px auto;
+      }
+      
+      svg {
+        transform: rotate(-90deg);
+        width: 100%;
+        height: 100%;
+      }
+      
+      .bg-circle {
+        fill: none;
+        stroke: #e6e6e6;
+        stroke-width: 6;
+      }
+      
+      .progress-circle {
+        fill: none;
+        stroke: #4caf50;
+        stroke-width: 6;
+        stroke-linecap: round;
+        stroke-dasharray: 188.4;
+        stroke-dashoffset: 188.4;
+        transition: stroke-dashoffset 1s ease;
+      }
+      
+      .circle-text {
+        position: absolute;
+        font-size: 14px;
+        font-weight: bold;
+        color: #333;
+      }
+      
+      @keyframes animateProgress {
+        0% {
+          stroke-dashoffset: 188.4;
+        }
+        100% {
+          stroke-dashoffset: calc(188.4 - (188.4 * var(--progress) / 100));
+        }
+      }
+      
+      .circle-progress[data-value="60"] .progress-circle {
+        --progress: 60;
+      }
+      
+      .circle-progress[data-value="30"] .progress-circle {
+        --progress: 30;
+      }
+      
+      .circle-progress[data-value="60"] .progress-circle {
+        animation: animateProgress 1s forwards;
+      }
+      
+      .circle-progress[data-value="30"] .progress-circle {
+        animation: animateProgress 1s forwards;
+      }
+
+      section {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    section.active {
+        display: block;
+    }
+
+    section:not(.active) {
+        display: none;
+    }
+
+
+</style>
+
+</head>
+
+<div class="main-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>Bionic Hand</h2>
+      <ul>
+        <li><a href="#home" onclick="showSection('home')">Home</a></li>
+        <li>
+            <a href="javascript:void(0);" onclick="toggleDropdownn()">Material</a>
+            <ul id="documentsDropdown">
+                <li><a href="javascript:void(0);" onclick="showPPT('python')">Python</a></li>
+                <li><a href="javascript:void(0);" onclick="showPPT('ml')">ML</a></li>
+            </ul>
+        </li>
+        <li><a href="#lectures" onclick="showSection('lectures')">Lectures</a></li>
+        <li><a href="#componants" onclick="showSection('componants')">Components</a></li>
+        <li><a href="#projects" onclick="showSection('projects')">Projects</a></li>
+      </ul>
+
+      <!-- Progress Bars inside Sidebar -->
+      <div class="progress-container">
+        <h3>Progress</h3>
+
+        <!-- Lectures Progress -->
+        <div class="progress-bar-container">
+            <label for="projectsProgress">Projects Progress:</label>
+            <div class="circle-progress" id="projectsProgress" data-value="0">
+              <svg>
+                <circle cx="50%" cy="50%" r="40%" class="bg-circle"></circle>
+                <circle cx="50%" cy="50%" r="40%" class="progress-circle"></circle>
+              </svg>
+              <div class="circle-text">0%</div>
+            </div>
+          </div>
+
+           <!-- Lecture Progress -->
+           <div class="progress-bar-container">
+            <label for="lectureProgress">Lectures Progress:</label>
+            <div class="circle-progress" id="lectureProgress" data-value="0">
+                <svg>
+                    <circle cx="50%" cy="50%" r="40%" class="bg-circle"></circle>
+                    <circle cx="50%" cy="50%" r="40%" class="progress-circle"></circle>
+                </svg>
+                <div class="circle-text">0%</div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+      <section id="home" class="active">
+        <div class="kit-container">
+          <img src="{% static 'images/bionic.jpg' %}" alt="Bionic Hand" class="kit-image">
+          <div class="kit-description">
+            <h3>Bionic Hand Overview</h3>
+            <p>A bionic hand is an advanced prosthetic device designed to replicate the functionality of a human hand. It uses sensors, actuators, and microcontrollers to interpret signals from the user’s body, such as muscle movements or nerve impulses.</p>
+            <p>Equipped with motors, it provides precise control for tasks like gripping, holding, and pointing. Modern bionic hands often incorporate machine learning to adapt to the user's unique movements over time. They can include features like tactile feedback, gesture recognition, and multi-grip functionality.</p>
+            <p>Built using lightweight materials and 3D printing, bionic hands are customizable for comfort and usability. Some models even integrate wireless connectivity for remote adjustments. These devices restore mobility and independence to individuals with limb loss or disabilities, making them a groundbreaking innovation in robotics and prosthetics.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="documents">
+        <h2>Documents</h2>
+        <p>see pdf</p>
+      </section>
+
+      <section id="lectures">
+        <h2>Lectures</h2>    
+        <div class="divider"></div>
+        <div class="video-container"><!-- Video Container -->
+          <div class="video-item" data-id="1">
+            <iframe src="https://www.youtube.com/embed/luAZIQBMB9k?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
+            <p>Lecture No 1</p>
+        </div>
+
+            <div class="video-item" data-id="2">
+                <iframe src="https://www.youtube.com/embed/hxt0uWkLKPA" frameborder="0" allowfullscreen></iframe>
+                <!-- <p>Working Mechanism</p> -->
+                <p>Lecture No 2</p>
+            </div>
+            <div class="video-item" data-id="3">
+                <iframe src="https://www.youtube.com/embed/Wehm3YD7Ap4" frameborder="0" allowfullscreen></iframe>
+                <!-- <p>Programming & Control</p> -->
+                <p>Lecture No 3</p>
+            </div>
+            <div class="video-item">
+              <iframe src="https://www.youtube.com/embed/CCZFbpHmFnQ" frameborder="0" allowfullscreen></iframe>
+              <!-- <p>Programming & Control</p> -->
+              <p>Lecture No 4</p>
+          </div>
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/9PI4eKmKNQs" frameborder="0" allowfullscreen></iframe>
+            <!-- <p>Programming & Control</p> -->
+            <p>Lecture No 5</p>
+        </div>
+        <div class="video-item">
+          <iframe src="https://www.youtube.com/embed/qbMOSEFuomI" frameborder="0" allowfullscreen></iframe>
+          <!-- <p>Programming & Control</p> -->
+          <p>Lecture No 6</p>
+      </div>
+        </div>
+    </section>
+    
+
+      <section id="componants">
+        <h2>Components</h2>
+        <div class="components-container">
+          <div class="component-item">
+            <img src="{% static 'images/servo_motor.png' %}" alt="Servo Motor" class="component-image">
+            <div class="component-description">
+              <h3>Servo Motor</h3>
+              <p>A servo motor is a compact and precise rotary actuator used to control the angular or linear position, velocity, and acceleration. It operates using a closed-loop feedback system, ensuring accurate movements.</p>
+            </div>
+          </div>
+          <div class="component-item">
+            <img src="{% static 'images/arduino_board.jpg' %}" alt="Arduino Board" class="component-image">
+            <div class="component-description">
+              <h3>Arduino Board</h3>
+              <p>The Arduino board is an open-source microcontroller platform designed for building electronic projects. It provides an easy-to-use hardware and software interface, making it beginner-friendly yet versatile for advanced applications.</p>
+            </div>
+          </div>
+          <div class="component-item">
+            <img src="{% static 'images/parts.jpg' %}" alt="Sensors" class="component-image">
+            <div class="component-description">
+              <h3>Parts</h3>
+              <p>A 3D printed bionic hand is an innovative prosthetic device designed to replicate the functions of a natural human hand. These hands often incorporate sensors and motors to provide movements such as gripping and holding objects.</p>
+            </div>
+          </div>
+          <div class="component-item">
+            <img src="{% static 'images/usb.jpg' %}" alt="Motors" class="component-image">
+            <div class="component-description">
+              <h3>USB</h3>
+              <p>A Mini USB A  to B cable is used to connect devices like cameras, printers, and Arduino boards to computers or other compatible devices. This cable supports data transfer and power supply, providing a reliable connection for various electronics.</p>
+            </div>
+          </div>
+          <div class="component-item">
+            <img src="{% static 'images/adapter.jpg' %}" alt="Power Supply" class="component-image">
+            <div class="component-description">
+              <h3>Adapter</h3>
+              <p>A 9V 1A adapter is a power supply device used to provide a stable 9-volt DC output with a current rating of up to 1 ampere. It is commonly used to power small electronic devices, such as Arduino boards, sensors, and motor drivers.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects">
+        <h2>Projects</h2>
+        <div class="projects-container">
+            <!-- Project 1 -->
+            <div class="project-item" data-id="1">
+                <div class="project-description">
+                    <h3>Project 1: Bionic Hand Prosthetic</h3>
+                    <p>Learn how to build a bionic hand prosthetic that mimics the movement of a real human hand.</p>
+                </div>
+            </div>
+            
+            <!-- Project 2 -->
+            <div class="project-item" data-id="2">
+                <div class="project-description">
+                    <h3>Project 2: Gesture-Controlled Bionic Hand</h3>
+                    <p>Develop a gesture-controlled bionic hand that uses sensors to detect user hand movements.</p>
+                </div>
+            </div>
+    
+            <!-- Project 3 -->
+            <div class="project-item" data-id="3">
+                <div class="project-description">
+                    <h3>Project 3: Myoelectric Bionic Hand</h3>
+                    <p>Design a myoelectric bionic hand that uses muscle signals to control hand movements.</p>
+                </div>
+            </div>
+    
+            <!-- Project 4 -->
+            <div class="project-item" data-id="4">
+                <div class="project-description">
+                    <h3>Project 4: AI-Enhanced Bionic Hand</h3>
+                    <p>Integrate AI to enhance the functionality and adaptability of a bionic hand.</p>
+                </div>
+            </div>
+    
+            <div class="project-item" data-id="5">
+                <div class="project-description">
+                    <h3>Project 5: Bionic Hand Prosthetic</h3>
+                    <p>Learn how to build a bionic hand prosthetic that mimics the movement of a real human hand using sensors and motors.</p>
+                </div>
+            </div>
+    
+            <div class="project-item" data-id="6">
+                <div class="project-description">
+                    <h3>Project 6: Smart Prosthetic Hand with Bluetooth Control</h3>
+                    <p>Create a smart prosthetic hand that can be controlled remotely via Bluetooth, offering enhanced flexibility for the user.</p>
+                </div>
+            </div>
+    
+            <div class="project-item" data-id="7">
+                <div class="project-description">
+                    <h3>Project 7: Voice-Controlled Bionic Hand</h3>
+                    <p>Design a bionic hand that responds to voice commands, allowing for hands-free control of its movements.</p>
+                </div>
+            </div>
+    
+            <div class="project-item" data-id="8">
+                <div class="project-description">
+                    <h3>Project 8: Bionic Hand with Multiple Grips</h3>
+                    <p>Create a bionic hand that can perform a variety of grips, such as pinch, power, and precision, to handle different objects.</p>
+                </div>
+            </div>
+    
+            <div class="project-item" data-id="9">
+                <div class="project-description">
+                    <h3>Project 9: Wearable Bionic Hand for Rehabilitation</h3>
+                    <p>Build a wearable bionic hand designed for physical rehabilitation, helping patients recover motor functions after injury.</p>
+                </div>
+            </div>
+    
+            <div class="project-item" data-id="10">
+                <div class="project-description">
+                    <h3>Project 10: Advanced Bionic Hand with Eye Tracking</h3>
+                    <p>Design a bionic hand that can be controlled with eye movements, offering enhanced mobility for individuals with limited hand or arm function.</p>
+                </div>
+            </div>
+    
+            <!-- Repeat the above structure for the remaining 16 projects -->
+        </div>
+    </section>
+    
+    </div>
+  </div>
+{% endblock %}
+
+
+
+{% block scripts %}
+<script>
+  // Add your JavaScript here
+  function showSection(sectionId) {
+      document.querySelectorAll('.content section').forEach(section => {
+        section.classList.remove('active');
+      });
+      document.getElementById(sectionId).classList.add('active');
+    }
+
+    function toggleDropdownn() {
+      const dropdown = document.getElementById('documentsDropdown');
+      dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+    }
+
+    function showPPT(pptName) {
+      document.querySelectorAll('.content section').forEach(section => {
+        section.classList.remove('active');
+      });
+
+      const documentsSection = document.getElementById('documents');
+      documentsSection.classList.add('active');
+
+      let pdfFilePath = '';
+      if (pptName === 'python') {
+        pdfFilePath = "{% static 'images/python.pdf' %}";
+      } else if (pptName === 'ml') {
+        pdfFilePath = "{% static 'images/ml.pdf' %}";
+      }
+
+      documentsSection.innerHTML = `
+        <h2>${pptName.toUpperCase()} Presentation</h2>
+        <iframe src="${pdfFilePath}" 
+                style="width: 76vw; height: 90vh; border: none; display: block;"></iframe>
+        `;
+    }
+    
+    function toggleDropdown() {
+  var dropdown = document.getElementById("dropdownMenu");
+  // Toggle the display property of the dropdown when the user clicks
+  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+}
+
+
+// JavaScript to track project access and update progress
+let totalProjects = document.querySelectorAll('.project-item').length;
+let accessedProjects = 0;
+
+const projectsProgress = document.getElementById('projectsProgress');
+const progressCircle = projectsProgress.querySelector('.progress-circle');
+const progressText = projectsProgress.querySelector('.circle-text');
+
+// Function to update progress
+function updateProgress() {
+  const progressPercentage = (accessedProjects / totalProjects) * 100;
+  const strokeOffset = 188.4 - (188.4 * progressPercentage / 100);
+  
+  progressCircle.style.strokeDashoffset = strokeOffset;
+  progressText.textContent = `${Math.round(progressPercentage)}%`;
+}
+
+// Event listener for project access
+document.querySelectorAll('.project-item').forEach(project => {
+  project.addEventListener('click', () => {
+    // Increase the accessed projects count
+    if (!project.classList.contains('accessed')) {
+      project.classList.add('accessed');
+      accessedProjects++;
+      updateProgress();
+    }
+  });
+});
+
+
+
+
+// JavaScript to track lecture access and update progress
+let totalLectures = document.querySelectorAll('.video-item').length;
+let accessedLectures = 0;
+
+const lecturesProgress = document.getElementById('lectureProgress');
+const lectureProgressCircle = lecturesProgress.querySelector('.progress-circle');
+const lectureProgressText = lecturesProgress.querySelector('.circle-text');
+
+// Function to update lecture progress
+function updateLectureProgress() {
+    const progressPercentage = (accessedLectures / totalLectures) * 100;
+    const strokeOffset = 188.4 - (188.4 * progressPercentage / 100);
+    
+    lectureProgressCircle.style.strokeDashoffset = strokeOffset;
+    lectureProgressText.textContent = `${Math.round(progressPercentage)}%`;
+}
+
+// Event listener for lecture access
+document.querySelectorAll('.video-item').forEach(lecture => {
+    lecture.addEventListener('click', () => {
+        // Increase the accessed lectures count
+        if (!lecture.classList.contains('accessed')) {
+            lecture.classList.add('accessed');
+            accessedLectures++;
+            updateLectureProgress();
+        }
+    });
+});
+
+
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+

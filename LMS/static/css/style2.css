@@ -1,0 +1,357 @@
+    :root {
+      --primary-color: #2f6fed; /* Blue color */
+      --secondary-color: #ffffff; /* White color */
+      --text-color: #0a0d14; /* Dark text */
+      --font-family: 'Red Hat Display', sans-serif;
+      --kit-gradient: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)); /* Overlay gradient */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #ffffff, #a2c2f2);
+      font-family: var(--font-family);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 32px;
+      color: var(--primary-color);
+      font-size: 32px;
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      background-color: var(--secondary-color);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for navbar */
+    }
+
+    .navbar .navbar-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    /* Animated PHN Logo */
+    .navbar .logo {
+  font-size: 32px; /* Increase font size here */
+  font-weight: bold;
+  color: var(--primary-color);
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.3s ease, color 0.3s ease;
+  animation: pulse 2s infinite;
+}
+
+
+    .navbar .logo:hover {
+      transform: scale(1.2) rotate(10deg); /* Scale and rotate on hover */
+      color: #ff5733; /* Change color on hover */
+    }
+
+    /* Keyframes for pulsing effect */
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        color: var(--primary-color);
+      }
+      50% {
+        transform: scale(1.1);
+        color: #ff9900; /* A lighter shade for the animation */
+      }
+    }
+
+    .navbar .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .navbar .nav-links a {
+      font-size: 18px;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .navbar .nav-links a:hover {
+      color: var(--primary-color);
+    }
+
+    /* Kit Section Styling */
+    .kit-container {
+      position: relative;
+      overflow: hidden; /* Hide scrolling overflow */
+      width: 100%;
+      margin: 0 auto;
+      height: 350px; /* Adjust height to fit kits */
+    }
+
+    .kit-row {
+      display: flex;
+      animation: infinite-scroll 20s linear infinite; /* Smooth scrolling animation */
+    }
+
+    .kit-box {
+      position: relative;
+      flex-shrink: 0; /* Prevent shrinking */
+      width: 240px; /* Kit width */
+      height: 320px; /* Kit height */
+      margin: 0 12px; /* Spacing between kits */
+      background: var(--kit-gradient);
+      background-size: cover;
+      background-position: center;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      color: #ffffff; /* White text for contrast */
+    }
+
+    /* Hover effect without rotation */
+    .kit-box:hover {
+      transform: scale(1.05); /* Enlarge slightly on hover */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .kit-image {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      filter: blur(4px); /* Soft blur for an overlay effect */
+      opacity: 0.8;
+    }
+
+    .kit-content {
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    }
+
+    .kit-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+
+    .kit-description {
+      font-size: 14px;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    /* Lock Icon Style */
+    .lock-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 24px;
+      color: #ffffff;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+
+    .kit-box:hover .lock-icon {
+      opacity: 1; /* Full opacity when hovering */
+    }
+
+    /* Hidden info box that appears on hover */
+    .kit-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(100%);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .kit-box:hover .kit-info {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .kit-info .buy-btn {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: #fff;
+      padding: 10px 20px;
+      text-decoration: none;
+      font-size: 16px;
+      border-radius: 5px;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .kit-info .buy-btn:hover {
+      background-color: #ff5733;
+    }
+
+    /* Infinite scrolling animation */
+    @keyframes infinite-scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%); /* Scroll half the length of the kits */
+      }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .kit-box {
+        width: 200px;
+        height: 280px;
+      }
+
+      .kit-image {
+        height: 140px;
+      }
+
+      .navbar .nav-links {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+
+    /* Hero Section */
+    .hero {
+            background-image: url('{% static "images/hero.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #2f6fed;
+            text-align: center;
+        }
+
+        .hero-content h2 {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+
+        /* Footer Styling */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 40px 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 50px;
+        }
+
+        .footer-logo {
+            flex: 1;
+        }
+
+        .footer-logo img {
+            width: 150px;
+        }
+
+        .footer-logo h2, .footer-logo h3 {
+            margin: 10px 0;
+        }
+
+        .footer-labs, .footer-company, .footer-contact {
+            flex: 1;
+            margin-left: 30px;
+        }
+
+        .footer-labs h4, .footer-company h4, .footer-contact h4 {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .footer-labs ul, .footer-company ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .footer-labs li, .footer-company li {
+            margin: 5px 0;
+        }
+
+        .footer-company li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-company li a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-contact .contact-info {
+            margin-top: 10px;
+        }
+
+        .footer-contact .contact-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .footer-contact .contact-item img {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        .footer-contact p {
+            margin: 0;
+        }
+
+        .user-initial {
+    width: 40px;
+    height: 40px;
+    background-color: blue;  /* Green background */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-left: 10px;
+}
+
+.dropdown-content {
+    display: none;  /* Keep the dropdown hidden by default */
+    position: absolute;
+    top: 100%;  /* Positions the dropdown below the user initial */
+    right: 0;  /* Align the dropdown to the right side of the user initial */
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown-content a:hover {
+    background-color: #ddd;
+  }

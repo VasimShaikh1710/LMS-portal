@@ -1,0 +1,671 @@
+{% extends "base.html" %}
+
+{% block title %}
+Robotic Kit
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<!-- Font Awesome CDN for the lock icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<head>
+<style>
+      :root {
+      --primary-color: #2f6fed; /* Blue color */
+      --secondary-color: #ffffff; /* White color */
+      --text-color: #0a0d14; /* Dark text */
+      --font-family: 'Red Hat Display', sans-serif;
+      --kit-gradient: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)); /* Overlay gradient */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #ffffff, #a2c2f2);
+      font-family: var(--font-family);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 32px;
+      color: var(--primary-color);
+      font-size: 32px;
+    }
+
+
+    /* Kit Section Styling */
+    .kit-container {
+      position: relative;
+      overflow: hidden; /* Hide scrolling overflow */
+      width: 100%;
+      margin: 0 auto;
+      height: 350px; /* Adjust height to fit kits */
+    }
+
+    .kit-row {
+      display: flex;
+      animation: infinite-scroll 20s linear infinite; /* Smooth scrolling animation */
+    }
+
+    .kit-box {
+      position: relative;
+      flex-shrink: 0; /* Prevent shrinking */
+      width: 240px; /* Kit width */
+      height: 320px; /* Kit height */
+      margin: 0 12px; /* Spacing between kits */
+      background: var(--kit-gradient);
+      background-size: cover;
+      background-position: center;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      color: #ffffff; /* White text for contrast */
+    }
+
+    /* Hover effect without rotation */
+    .kit-box:hover {
+      transform: scale(1.05); /* Enlarge slightly on hover */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .kit-image {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      filter: blur(4px); /* Soft blur for an overlay effect */
+      opacity: 0.8;
+    }
+
+    .kit-content {
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    }
+
+    .kit-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+
+    .kit-description {
+      font-size: 14px;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    /* Lock Icon Style */
+    .lock-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 24px;
+      color: #ffffff;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+
+    .kit-box:hover .lock-icon {
+      opacity: 1; /* Full opacity when hovering */
+    }
+
+    /* Hidden info box that appears on hover */
+    .kit-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(100%);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .kit-box:hover .kit-info {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .kit-info .buy-btn {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: #fff;
+      padding: 10px 20px;
+      text-decoration: none;
+      font-size: 16px;
+      border-radius: 5px;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .kit-info .buy-btn:hover {
+      background-color: #ff5733;
+    }
+
+    /* Infinite scrolling animation */
+    @keyframes infinite-scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%); /* Scroll half the length of the kits */
+      }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .kit-box {
+        width: 200px;
+        height: 280px;
+      }
+
+      .kit-image {
+        height: 140px;
+      }
+
+      .navbar .nav-links {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+
+    /* Hero Section */
+    .hero {
+            background-image: url('{% static "images/Hero.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+            height: 70vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white; /*#2f6fed*/
+            text-align: center;
+        }
+
+        .hero-content h2 {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+
+        /* Footer Styling */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 40px 0;
+        }
+
+        .footer-content {
+          display: flex;
+    align-items: center;
+    gap: 10px; /* Icon और Text के बीच 10px space */
+        }
+
+        .footer-logo {
+            flex: 1;
+        }
+
+        .footer-logo img {
+            width: 60px;
+        }
+
+        .footer-logo h2, .footer-logo h3 {
+            margin: 10px 0;
+        }
+
+        .footer-labs, .footer-company, .footer-contact {
+            flex: 1;
+            margin-left: 30px;
+        }
+
+        .footer-labs h4, .footer-company h4, .footer-contact h4 {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .footer-labs ul, .footer-company ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .footer-labs li, .footer-company li {
+            margin: 5px 0;
+        }
+
+        .footer-company li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-company li a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-contact .contact-info {
+            margin-top: 10px;
+        }
+
+        .footer-contact .contact-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            gap: 10px; /* Icon और Text के बीच 10px space */
+        }
+
+        .footer-contact .contact-item img {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        .footer-contact p {
+            margin: 0;
+        }
+
+        /*footer social*/
+        .footer-social {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.footer-social h4 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: white; /* Heading color white */
+}
+
+.footer-social a {
+    color: white; /* Icons white color */
+    font-size: 30px; /* Increase icon size */
+    margin: 0 10px; /* Space between icons */
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.footer-social a:hover {
+    transform: scale(1.2); /* Slightly increase size on hover */
+    color: #f4c542; /* Change color on hover (Yellow) */
+}
+
+
+
+
+ /* About Section Styling */
+/* About Section Styling */
+.about-section {
+    padding: 80px 20px;
+    /* background: white; -- white color*/
+    text-align: center;
+    color: #333;
+    position: relative;
+}
+
+/* Container for side-by-side text */
+.about-text-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+/* Main Text Styling for Each Column */
+.about-text {
+    flex: 1;
+    font-size: 1.5rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    line-height: 1.8;
+    letter-spacing: 0.5px;
+    text-align: left;
+    padding: 25px;
+    background: linear-gradient(135deg, #f0f4f7, #d1e0e6);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1s ease-out, transform 1s ease-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Hover Effect for the Text Box */
+.about-text:hover {
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-10px);
+}
+
+/* Scroll Animation: Text appears when in viewport */
+.about-section.visible .about-text {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Highlighting key words */
+.highlight {
+    color: #2f6fed;
+    font-weight: bold;
+}
+
+/* Space between sections */
+section {
+    margin-bottom: 80px;
+}
+
+/* Responsive Font Size */
+@media (max-width: 768px) {
+    .about-text-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .about-text {
+        font-size: 1.2rem;
+    }
+}
+
+/* Responsive Spacing for Mobile */
+@media (max-width: 768px) {
+    section {
+        margin-bottom: 50px;
+    }
+}
+
+
+  
+</style>
+
+</head>
+
+  <!-- Hero Section (Optional) -->
+  <section class="hero">
+    <div class="hero-content">
+        <h2>Welcome to PHN Robotics</h2>
+        <p>Welcome to PHN Robotics, where innovation meets precision.</p>
+        <p>specialize in cutting-edge robotics technology, offering solutions that integrate AI, machine learning, and automation for real-world applications.</p> 
+        <p>Explore our projects and join us in revolutionizing the future of robotics.</p> 
+        <p>Let's create smarter, more efficient systems together!</p>
+    </div>
+</section>
+
+
+  <section class="common-section">
+    <h1>Robotics Kits</h1>
+    <div class="kit-container">
+      <div class="kit-row">
+        
+        <!-- Kit 1 -->
+        <div class="kit-box">
+          <a href="{% url 'qrscan' %}">
+            <img src="{% static 'images/drone.jpg' %}" alt="Robotics Kit 1" class="kit-image">
+            <div class="kit-content">
+              <div class="kit-title">Drone</div>
+              <div class="kit-description">Beginner-friendly robotics kit for students.</div>
+              <i class="fas fa-lock lock-icon"></i> <!-- Lock icon -->
+            </div>
+          </a>
+          <!-- Info Box on Hover -->
+          <div class="kit-info">
+            <p>Perfect for students to get hands-on with drone technology. Buy now!</p>
+          </div>
+        </div>
+        <!-- Kit 2 -->
+        <div class="kit-box">
+          <a href="/bionic_hand">
+            <img src="{% static 'images/bionic.jpg' %}" alt="Robotics Kit 2" class="kit-image">
+            <div class="kit-content">
+              <div class="kit-title">Bionic Hand</div>
+              <div class="kit-description">Ideal for intermediate-level learners.</div>
+              <i class="fas fa-lock lock-icon"></i> <!-- Lock icon -->
+            </div>
+          </a>
+          <!-- Info Box on Hover -->
+          <div class="kit-info">
+            <p>Build your own bionic hand and understand the mechanics behind it. Buy now!</p>
+          </div>
+        </div>
+        <!-- Kit 3 -->
+        <div class="kit-box">
+          <a href="{% url 'qrscan' %}">
+            <img src="{% static 'images/aster.jpg' %}" alt="Robotics Kit 3" class="kit-image">
+            <div class="kit-content">
+              <div class="kit-title">Aster Robot</div>
+              <div class="kit-description">Advanced kit for robotics enthusiasts.</div>
+              <i class="fas fa-lock lock-icon"></i> <!-- Lock icon -->
+            </div>
+          </a>
+          <!-- Info Box on Hover -->
+          <div class="kit-info">
+            <p>Aster robot is a great project for advanced robotics learners. Get it now!</p>
+          </div>
+        </div>
+        <!-- Additional kits... -->
+
+        <!-- Kit 4 -->
+        <div class="kit-box">
+          <a href="{% url 'qrscan' %}">
+            <img src="{% static 'images/humanoid.jpg' %}" alt="Robotics Kit 3" class="kit-image">
+            <div class="kit-content">
+              <div class="kit-title">Humanoid Robot</div>
+              <div class="kit-description">Build an advanced humanoid robot for research and learning.</div>
+              <i class="fas fa-lock lock-icon"></i> <!-- Lock icon -->
+            </div>
+          </a>
+          <!-- Info Box on Hover -->
+          <div class="kit-info">
+            <p>Humanoid robot is a great project for advanced robotics learners. Get it now!</p>
+          </div>
+        </div>
+
+        <!-- Kit 5 -->
+        <div class="kit-box">
+          <a href="{% url 'qrscan' %}">
+            <img src="{% static 'images/scara.jpg' %}" alt="Robotics Kit 3" class="kit-image">
+            <div class="kit-content">
+              <div class="kit-title">Scara Robot</div>
+              <div class="kit-description">Design a robotic arm using SCARA configuration.</div>
+              <i class="fas fa-lock lock-icon"></i> <!-- Lock icon -->
+            </div>
+          </a>
+          <!-- Info Box on Hover -->
+          <div class="kit-info">
+            <p>Scara robot is a great project for advanced robotics learners. Get it now!</p>
+          </div>
+        </div>
+
+        <!-- Kit 6 -->
+        <div class="kit-box">
+          <a href="{% url 'qrscan' %}">
+            <img src="{% static 'images/dobot.jpg' %}" alt="Robotics Kit 3" class="kit-image">
+            <div class="kit-content">
+              <div class="kit-title">Dobot Robot</div>
+              <div class="kit-description">A versatile robotic arm with precision motion.</div>
+              <i class="fas fa-lock lock-icon"></i> <!-- Lock icon -->
+            </div>
+          </a>
+          <!-- Info Box on Hover -->
+          <div class="kit-info">
+            <p>Dobot robot is a great project for advanced robotics learners. Get it now!</p>
+          </div>
+        </div>
+
+        <!-- Kit 7 -->
+        <div class="kit-box">
+          <a href="{% url 'qrscan' %}">
+            <img src="{% static 'images/pi_robot.jpg' %}" alt="Robotics Kit 3" class="kit-image">
+            <div class="kit-content">
+              <div class="kit-title">Raspberry Pi Robot</div>
+              <div class="kit-description">Beginner's kit for building robots using Raspberry Pi.</div>
+              <i class="fas fa-lock lock-icon"></i> <!-- Lock icon -->
+            </div>
+          </a>
+          <!-- Info Box on Hover -->
+          <div class="kit-info">
+            <p>Raspberry Pi robot is a great project for advanced robotics learners. Get it now!</p>
+          </div>
+        </div>
+
+        <!-- Kit 8 -->
+        <div class="kit-box">
+          <a href="{% url 'qrscan' %}">
+            <img src="{% static 'images/arduino_robot.jpg' %}" alt="Robotics Kit 3" class="kit-image">
+            <div class="kit-content">
+              <div class="kit-title">Arduino Robot</div>
+              <div class="kit-description">A simple and fun robot kit for Arduino enthusiasts.</div>
+              <i class="fas fa-lock lock-icon"></i> <!-- Lock icon -->
+            </div>
+          </a>
+          <!-- Info Box on Hover -->
+          <div class="kit-info">
+            <p>Arduino robot is a great project for advanced robotics learners. Get it now!</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+<!-- Text Below Banner -->
+<section class="about-section" id="about">
+  <div class="about-text-container">
+      <div class="about-text">
+          <p>At <span class="highlight">PHN Technology</span>, we believe in shaping the future by empowering individuals with the skills of tomorrow.  
+          Our innovative robotic kits are designed for both children and adults, making it easier for everyone to dive into the world of robotics and technology.</p>
+      </div>
+      <div class="about-text">
+          <p>Whether you're a beginner or an experienced enthusiast, our kits provide a hands-on learning experience, fostering creativity, problem-solving, and critical thinking.  
+          Join us in exploring the exciting world of robotics and let your learning journey begin today!</p>
+      </div>
+  </div>
+</section>
+
+
+
+
+
+
+   <!-- Footer Section -->
+   <footer>
+    <div class="footer-content">
+        <div class="footer-logo">
+            <img src="{% static 'images/phn.jpg' %}" alt="PHN Robotics Logo" class="phn-logo">
+            <h2>India’s Most Trusted Destination For</h2>
+            <h3>AI & Robotics Education</h3>
+        </div>
+        <div class="footer-labs">
+            <h4>STEM Make In India</h4>
+            <h4>PHN Labs</h4>
+            <ul>
+                <li>Center of Excellence Lab</li>
+                <li>Entrepreneurship Lab</li>
+                <li>Prototype & Innovation Lab</li>
+                <li>Foundation Lab</li>
+                <li>Media</li>
+            </ul>
+        </div>
+        <div class="footer-company">
+            <h4>Our Company</h4>
+            <ul>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#advisory-board">Advisory Board</a></li>
+                <li><a href="#careers">Careers</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contact Info</a></li>
+            </ul>
+        </div>
+        <div class="footer-contact">
+            <h4>Contact Us</h4>
+            <div class="contact-info">
+              <div class="contact-item">
+                <i class="fas fa-phone"></i> 
+                <p> +91 9226056402</p>
+            </div>
+
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <p> info@phntechnology.com</p>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <p>Solitaire Business Hub E Wing 5010, F wing 5010 & 5020, 5th Floor, Viman Nagar, Pune, Maharashtra 411014</p>
+        </div>
+            </div>
+        </div>
+      </div>
+
+
+      <div class="footer-social">
+        <h4>Follow Us</h4>
+        <a href="https://www.linkedin.com/company/phn-technology" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="https://www.instagram.com/phn_technology/ target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.facebook.com/phntechnology" target="_blank"><i class="fab fa-facebook"></i></a>
+        <!-- <a href="https://www.threads.net/@phntechnology" target="_blank"><i class="fab fa-threads"></i></a> -->
+        <a href="https://www.youtube.com/channel/UCCoKsPs0lsyr383TIZOoRUg" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+
+</footer>
+  
+{% endblock %}
+
+
+  
+{% block scripts %}
+  <script>
+    // JavaScript to stop scrolling when hovering on kit
+    document.addEventListener("DOMContentLoaded", function() {
+      const kitRow = document.querySelector('.kit-row');
+      const kitBoxes = document.querySelectorAll('.kit-box');
+
+      kitBoxes.forEach(kit => {
+        kit.addEventListener('mouseenter', function() {
+          kitRow.style.animationPlayState = 'paused'; // Pause animation
+        });
+
+        kit.addEventListener('mouseleave', function() {
+          kitRow.style.animationPlayState = 'running'; // Resume animation
+        });
+      });
+    });
+
+    function toggleDropdown() {
+  var dropdown = document.getElementById("dropdownMenu");
+  // Toggle the display property of the dropdown when the user clicks
+  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+}
+
+//about 
+
+document.addEventListener("DOMContentLoaded", function() {
+        function revealOnScroll() {
+            var aboutSection = document.getElementById("about");
+            var position = aboutSection.getBoundingClientRect().top;
+            var screenHeight = window.innerHeight;
+    
+            if (position < screenHeight - 100) {
+                aboutSection.classList.add("visible");
+            }
+        }
+    
+        window.addEventListener("scroll", revealOnScroll);
+        revealOnScroll(); // Run once to check if already in viewport
+    });
+
+  </script>
+{% endblock %}
+
+
+
+
+

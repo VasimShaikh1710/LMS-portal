@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Form</title>
+  <style>
+    /* Body background gradient */
+    body {
+      background: linear-gradient(to bottom, #ffffff, #a2c2f2);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Profile Form container */
+    form {
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 30px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    /* General and Conditional Fields container */
+    .form-column {
+      flex: 1;
+      min-width: 270px;
+    }
+
+    /* Form labels and inputs */
+    label {
+      font-size: 14px;
+      font-weight: bold;
+      color: #003366;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    input[type="text"], input[type="email"], input[type="tel"], input[type="date"], textarea, input[type="file"], select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 18px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 14px;
+      background-color: #f7f7f7;
+    }
+
+    /* Focus effect on input fields */
+    input:focus, textarea:focus, select:focus {
+      border-color: #0056b3;
+      outline: none;
+    }
+
+    /* Submit Button */
+    button[type="submit"] {
+      background-color: #007bff;
+      color: white;
+      padding: 15px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    /* Responsive Styling */
+    @media (max-width: 600px) {
+      form {
+        width: 100%;
+        margin: 20px;
+        padding: 20px;
+      }
+    }
+
+    /* Styling for the conditional fields */
+    #student_fields, #adult_fields {
+      display: none;
+    }
+
+    /* Styling for each section */
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .section label {
+      margin-bottom: 8px;
+    }
+
+    .section input[type="text"], .section input[type="email"], .section input[type="tel"], .section input[type="date"], .section textarea {
+      margin-bottom: 20px;
+    }
+
+    /* Additional specific styling for profile fields */
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    input[type="file"] {
+      padding: 8px;
+      border: 1px solid #ccc;
+      background-color: #f7f7f7;
+    }
+  </style>
+</head>
+<body>
+
+  <form action="/save_profile" method="POST" enctype="multipart/form-data">
+    
+    <!-- User Type Selection -->
+    <div class="section form-column">
+      <label for="user_type">User Type:</label>
+      <select id="user_type" name="user_type" required onchange="toggleUserTypeFields()">
+        <option value="student">Student</option>
+        <option value="adult">Adult</option>
+      </select>
+    </div>
+
+    <!-- General fields (Right Side) -->
+    <div class="form-column">
+      <div class="section">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <div class="section">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <div class="section">
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" required>
+      </div>
+
+      <div class="section">
+        <label for="address">Address:</label>
+        <textarea id="address" name="address"></textarea>
+      </div>
+
+      <div class="section">
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" required>
+      </div>
+
+      <div class="section">
+        <label for="profile_picture">Profile Picture:</label>
+        <input type="file" id="profile_picture" name="profile_picture">
+      </div>
+    </div>
+
+    <!-- Conditional fields based on user type (Left Side) -->
+    <div id="student_fields" class="form-column">
+      <div class="section">
+        <label for="school">School Name:</label>
+        <input type="text" id="school" name="school">
+      </div>
+      <div class="section">
+        <label for="grade">Grade/Class:</label>
+        <input type="text" id="grade" name="grade">
+      </div>
+      <div class="section">
+        <label for="student_id">Student ID:</label>
+        <input type="text" id="student_id" name="student_id">
+      </div>
+      <div class="section">
+        <label for="guardian">Parent/Guardian Name:</label>
+        <input type="text" id="guardian" name="guardian">
+      </div>
+      <div class="section">
+        <label for="emergency_contact">Emergency Contact:</label>
+        <input type="tel" id="emergency_contact" name="emergency_contact">
+      </div>
+    </div>
+
+    <div id="adult_fields" class="form-column">
+      <div class="section">
+        <label for="occupation">Occupation:</label>
+        <input type="text" id="occupation" name="occupation">
+      </div>
+      <div class="section">
+        <label for="workplace">Workplace Name:</label>
+        <input type="text" id="workplace" name="workplace">
+      </div>
+      <div class="section">
+        <label for="interests">Professional Interests:</label>
+        <textarea id="interests" name="interests"></textarea>
+      </div>
+      <div class="section">
+        <label for="work_address">Work Address:</label>
+        <textarea id="work_address" name="work_address"></textarea>
+      </div>
+    </div>
+
+    <button type="submit">Save Profile</button>
+  </form>
+
+  <script>
+    // Function to show/hide fields based on the selected user type
+    function toggleUserTypeFields() {
+      var userType = document.getElementById("user_type").value;
+      var studentFields = document.getElementById("student_fields");
+      var adultFields = document.getElementById("adult_fields");
+
+      if (userType === "student") {
+        studentFields.style.display = "block";
+        adultFields.style.display = "none";
+      } else if (userType === "adult") {
+        studentFields.style.display = "none";
+        adultFields.style.display = "block";
+      }
+    }
+
+    // Initial call to display fields based on default selection
+    toggleUserTypeFields();
+  </script>
+
+</body>
+</html>

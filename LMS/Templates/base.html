@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Robotics Kits{% endblock %}</title>
+  
+  <!-- Font Awesome CDN for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- Add additional styles if required -->
+  {% block styles %}
+  <style>
+    /* Navbar Styles */
+    :root {
+      --primary-color: #2f6fed; /* Blue color */
+      --secondary-color: #ffffff; /* White color */
+      --text-color: #0a0d14; /* Dark text */
+      --font-family: 'Red Hat Display', sans-serif;
+      --kit-gradient: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)); /* Overlay gradient */
+    }
+    .navbar {
+      background-color: var(--secondary-color);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for navbar */
+    }
+
+    .navbar .navbar-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    /* Animated PHN Logo */
+    .navbar .logo {
+  font-size: 32px; /* Increase font size here */
+  font-weight: bold;
+  color: var(--primary-color); /*var(--primary-color)*/
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.3s ease, color 0.3s ease;
+  animation: pulse 2s infinite;
+}
+
+
+    .navbar .logo:hover {
+      transform: scale(1.2) rotate(10deg); /* Scale and rotate on hover */
+      color: #ff5733; /* Change color on hover */
+    }
+
+    /* Keyframes for pulsing effect */
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        color: var(--primary-color); /*var(--primary-color)*/
+      }
+      50% {
+        transform: scale(1.1);
+        color: #ff9900; /* A lighter shade for the animation */
+      }
+    }
+
+    .navbar .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .navbar .nav-links a {
+      font-size: 18px;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .navbar .nav-links a:hover {
+      color: var(--primary-color);
+    }
+
+    .user-initial {
+    width: 40px;
+    height: 40px;
+    background-color: blue;  /* Green background */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-left: 10px;
+}
+
+.dropdown-content {
+    display: none;  /* Keep the dropdown hidden by default */
+    position: absolute;
+    top: 100%;  /* Positions the dropdown below the user initial */
+    right: 0;  /* Align the dropdown to the right side of the user initial */
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown-content a:hover {
+    background-color: #ddd;
+  }
+  </style>
+  {% endblock %}
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+        <a href="#" class="logo">PHN</a>
+        <div class="nav-links">
+            {% if is_logged_in %}
+                <!-- Logout Button and User Initial -->
+                <a href="/logout">logout</a>
+                <div class="user-initial" onclick="toggleDropdown()">
+                    {{ username_initial }}
+                    <div class="dropdown-content" id="dropdownMenu">
+                        <a href="/profile">Profile</a>
+                        <a href="#">Kit</a>
+                        <a href="#">Cart</a>
+                    </div>
+                </div>
+            {% else %}
+                <!-- Login and Signup Buttons -->
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'signup' %}">Signup</a>
+            {% endif %}
+        </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <!-- Add additional scripts if required -->
+  {% block scripts %}
+  <script>
+    // Dropdown toggle functionality
+    function toggleDropdown() {
+  var dropdown = document.getElementById("dropdownMenu");
+  // Toggle the display property of the dropdown when the user clicks
+  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+}
+  </script>
+  {% endblock %}
+</body>
+</html>

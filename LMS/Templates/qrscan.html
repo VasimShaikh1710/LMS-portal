@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Scan</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <style>
+    body {
+      background-color: #f9fbff;
+      font-family: 'Red Hat Display', sans-serif;
+      margin: 0;
+    }
+
+    .qr-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 20px;
+      text-align: center;
+      background: linear-gradient(to bottom, #2f6fed, #ffffff);
+    }
+
+    h1 {
+      font-size: 32px;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 18px;
+      color: #0a0d14;
+      margin-bottom: 30px;
+    }
+
+    .qr-scan-box {
+      border: 2px dashed var(--primary-color);
+      border-radius: 10px;
+      width: 300px;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.8);
+      position: center;
+      overflow: hidden;  /* Ensure video stays within box */
+    }
+
+    .qr-scan-box i {
+      font-size: 50px;
+      color: var(--primary-color);
+    }
+
+    .back-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: var(--primary-color);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      background-color: #1e50c4;
+    }
+
+    /* Video styling */
+    #videoElement {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;  /* Ensure the video fills the box without distortion */
+    }
+
+    #startScanBtn {
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: var(--primary-color);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    #startScanBtn:hover {
+      background-color: #1e50c4;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+  <div class="qr-section">
+    <h1>QR Code Scanner</h1>
+    <p>Click the button below to start the camera and scan the QR code.</p>
+
+    <!-- QR Scan Box (optional for UI) -->
+    <div class="qr-scan-box">
+      <i class="fas fa-camera"></i>  <!-- Camera Icon -->
+      <!-- Video Element to show camera stream -->
+      <video id="videoElement" autoplay></video>
+    </div>
+
+    <!-- Button to Start Camera -->
+    <button id="startScanBtn">Start Camera</button>
+
+    <!-- Back Button -->
+    <a href="/" class="back-btn">Go Back</a>
+  </div>
+
+  <script>
+    // Get elements
+    const videoElement = document.getElementById('videoElement');
+    const startScanBtn = document.getElementById('startScanBtn');
+    const qrScanBox = document.querySelector('.qr-scan-box'); // QR scan box container
+
+    // Function to start camera
+    function startCamera() {
+      // Request camera access
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then((stream) => {
+          videoElement.srcObject = stream;  // Set video stream to video element
+          startScanBtn.disabled = true;  // Disable the start button after camera starts
+          qrScanBox.style.display = 'block'; // Show QR scan box with camera video
+        })
+        .catch((err) => {
+          console.log('Error accessing the camera: ', err);
+        });
+    }
+
+    // Event listener for start scan button
+    startScanBtn.addEventListener('click', startCamera);
+  </script>
+</body>
+</html>
