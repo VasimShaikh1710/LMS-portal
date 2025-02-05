@@ -18,8 +18,6 @@ def home(request):
 
 
 
-from django.shortcuts import redirect
-
 def login(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -78,6 +76,7 @@ def qrscan(request):
         return redirect('login')
 
 
+'''
 def bionic_hand(request):
     username = request.session.get('username')
     if username:
@@ -86,13 +85,19 @@ def bionic_hand(request):
             return render(request, 'bionic_hand.html', {'username_initial': username_initial, 'is_logged_in': True})
     else:
         return redirect(f'{reverse("login")}?next={request.path}')
+'''
 
-
-def home1(request):
-    return render(request, 'home1.html')
+def bionic_hand(request):
+    return render(request, 'bionic_hand.html')
 
 def buybionicpage(request):
     return render(request, 'buybionicpage.html')
+
+def aster_robot(request):
+    return render(request, 'aster_robot.html')
+
+def buybionicpage(request):
+    return render(request, 'buyasterpage.html')
 
 
 
