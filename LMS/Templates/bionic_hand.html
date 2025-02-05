@@ -506,6 +506,16 @@ Kit
         stroke-dashoffset: 188.4;
         transition: stroke-dashoffset 1s ease;
       }
+
+      .progress-circlelec {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 188.4;
+    stroke-dashoffset: 188.4;
+    transition: stroke-dashoffset 1s ease;
+     }
+
       
       .circle-text {
         position: absolute;
@@ -579,27 +589,27 @@ Kit
       <div class="progress-container">
         <h3>Progress</h3>
 
-        <!-- Lectures Progress -->
+        <!-- Project Progress -->
         <div class="progress-bar-container">
             <label for="projectsProgress">Projects Progress:</label>
-            <div class="circle-progress" id="projectsProgress" data-value="0">
+            <div class="circle-progress" id="projectProgressCircle" data-value="0">
               <svg>
                 <circle cx="50%" cy="50%" r="40%" class="bg-circle"></circle>
                 <circle cx="50%" cy="50%" r="40%" class="progress-circle"></circle>
               </svg>
-              <div class="circle-text">0%</div>
+              <div class="circle-text" id="projectProgressText">0%</div>
             </div>
           </div>
 
            <!-- Lecture Progress -->
            <div class="progress-bar-container">
             <label for="lectureProgress">Lectures Progress:</label>
-            <div class="circle-progress" id="lectureProgress" data-value="0">
+            <div class="circle-progress" id="videoProgressCircle" data-value="0">
                 <svg>
                     <circle cx="50%" cy="50%" r="40%" class="bg-circle"></circle>
-                    <circle cx="50%" cy="50%" r="40%" class="progress-circle"></circle>
+                    <circle cx="50%" cy="50%" r="40%" class="progress-circlelec"></circle>
                 </svg>
-                <div class="circle-text">0%</div>
+                <div class="circle-text" id="videoProgressText">0%</div>
             </div>
         </div>
         </div>
@@ -627,37 +637,7 @@ Kit
       <section id="lectures">
         <h2>Lectures</h2>    
         <div class="divider"></div>
-        <div class="video-container"><!-- Video Container -->
-          <div class="video-item" data-id="1">
-            <iframe src="https://www.youtube.com/embed/luAZIQBMB9k?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
-            <p>Lecture No 1</p>
-        </div>
-
-            <div class="video-item" data-id="2">
-                <iframe src="https://www.youtube.com/embed/hxt0uWkLKPA" frameborder="0" allowfullscreen></iframe>
-                <!-- <p>Working Mechanism</p> -->
-                <p>Lecture No 2</p>
-            </div>
-            <div class="video-item" data-id="3">
-                <iframe src="https://www.youtube.com/embed/Wehm3YD7Ap4" frameborder="0" allowfullscreen></iframe>
-                <!-- <p>Programming & Control</p> -->
-                <p>Lecture No 3</p>
-            </div>
-            <div class="video-item">
-              <iframe src="https://www.youtube.com/embed/CCZFbpHmFnQ" frameborder="0" allowfullscreen></iframe>
-              <!-- <p>Programming & Control</p> -->
-              <p>Lecture No 4</p>
-          </div>
-          <div class="video-item">
-            <iframe src="https://www.youtube.com/embed/9PI4eKmKNQs" frameborder="0" allowfullscreen></iframe>
-            <!-- <p>Programming & Control</p> -->
-            <p>Lecture No 5</p>
-        </div>
-        <div class="video-item">
-          <iframe src="https://www.youtube.com/embed/qbMOSEFuomI" frameborder="0" allowfullscreen></iframe>
-          <!-- <p>Programming & Control</p> -->
-          <p>Lecture No 6</p>
-      </div>
+        <div class="video-container" id = "videoContainer"><!-- Video Container -->
         </div>
     </section>
     
@@ -833,70 +813,89 @@ Kit
   dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
 }
 
+//Progress
 
-// JavaScript to track project access and update progress
-let totalProjects = document.querySelectorAll('.project-item').length;
-let accessedProjects = 0;
+let videoIds = ['luAZIQBMB9k', 'hxt0uWkLKPA', 'Wehm3YD7Ap4', 'CCZFbpHmFnQ', '9PI4eKmKNQs', 'qbMOSEFuomI'];
+let watchedVideos = new Set();
+let completedProjects = new Set();
+const totalDashArray = 188.4;
+const totalProjects = document.querySelectorAll('.project-item').length; // Dynamically fetch the number of projects
 
-const projectsProgress = document.getElementById('projectsProgress');
-const progressCircle = projectsProgress.querySelector('.progress-circle');
-const progressText = projectsProgress.querySelector('.circle-text');
-
-// Function to update progress
-function updateProgress() {
-  const progressPercentage = (accessedProjects / totalProjects) * 100;
-  const strokeOffset = 188.4 - (188.4 * progressPercentage / 100);
-  
-  progressCircle.style.strokeDashoffset = strokeOffset;
-  progressText.textContent = `${Math.round(progressPercentage)}%`;
+function loadVideos() {
+    let container = document.getElementById('videoContainer');
+    videoIds.forEach((videoId, index) => {
+        let div = document.createElement('div');
+        div.className = 'video-item';
+        let iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1`;
+        iframe.allow = "autoplay; encrypted-media";
+        iframe.setAttribute("data-index", index);
+        div.appendChild(iframe);
+        container.appendChild(div);
+        iframe.onload = () => attachVideoEvent(iframe, index);
+    });
 }
 
-// Event listener for project access
-document.querySelectorAll('.project-item').forEach(project => {
-  project.addEventListener('click', () => {
-    // Increase the accessed projects count
-    if (!project.classList.contains('accessed')) {
-      project.classList.add('accessed');
-      accessedProjects++;
-      updateProgress();
-    }
-  });
-});
-
-
-
-
-// JavaScript to track lecture access and update progress
-let totalLectures = document.querySelectorAll('.video-item').length;
-let accessedLectures = 0;
-
-const lecturesProgress = document.getElementById('lectureProgress');
-const lectureProgressCircle = lecturesProgress.querySelector('.progress-circle');
-const lectureProgressText = lecturesProgress.querySelector('.circle-text');
-
-// Function to update lecture progress
-function updateLectureProgress() {
-    const progressPercentage = (accessedLectures / totalLectures) * 100;
-    const strokeOffset = 188.4 - (188.4 * progressPercentage / 100);
-    
-    lectureProgressCircle.style.strokeDashoffset = strokeOffset;
-    lectureProgressText.textContent = `${Math.round(progressPercentage)}%`;
-}
-
-// Event listener for lecture access
-document.querySelectorAll('.video-item').forEach(lecture => {
-    lecture.addEventListener('click', () => {
-        // Increase the accessed lectures count
-        if (!lecture.classList.contains('accessed')) {
-            lecture.classList.add('accessed');
-            accessedLectures++;
-            updateLectureProgress();
+function attachVideoEvent(iframe, index) {
+    let player = new YT.Player(iframe, {
+        events: {
+            'onStateChange': (event) => onPlayerStateChange(event, index)
         }
+    });
+}
+
+function onPlayerStateChange(event, index) {
+    if (event.data === YT.PlayerState.ENDED) {
+        watchedVideos.add(index);
+        updateProgress("video");
+    }
+}
+
+function updateProgress(type) {
+    let progress = type === "video" 
+        ? (watchedVideos.size / videoIds.length) * 100 
+        : (completedProjects.size / totalProjects) * 100; // Use the dynamic totalProjects count
+
+    let progressCircle = document.getElementById(type + "ProgressCircle").querySelector(".progress-circle");
+    let progressText = document.getElementById(type + "ProgressText");
+
+    document.getElementById(type + "ProgressCircle").setAttribute("data-value", progress);
+    progressText.textContent = Math.round(progress) + "%";
+    progressCircle.style.strokeDashoffset = totalDashArray - (totalDashArray * progress / 100);
+
+    // Change circle color when progress reaches 100% for video
+    if (type === "video") {
+        if (watchedVideos.size === videoIds.length) {
+            progressCircle.style.stroke = "green"; // Change to green when all videos are watched
+        } else {
+            progressCircle.style.stroke = "#4db8ff"; // Default color
+        }
+    }
+
+    // Change circle color when project progress reaches 100%
+    if (type === "project") {
+        if (completedProjects.size === totalProjects) {
+            progressCircle.style.stroke = "green"; // Change to green when all projects are completed
+        } else {
+            progressCircle.style.stroke = "#4db8ff"; // Default color
+        }
+    }
+}
+
+document.querySelectorAll(".project-item").forEach(item => {
+    item.addEventListener("click", () => {
+        let projectId = item.getAttribute("data-id");
+        completedProjects.add(projectId);
+        updateProgress("project");
     });
 });
 
+function onYouTubeIframeAPIReady() {
+    loadVideos();
+}
 
 </script>
+<script src="https://www.youtube.com/iframe_api"></script>
 {% endblock %}
 
 
